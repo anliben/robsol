@@ -1,0 +1,27 @@
+<po-page-default p-title="Formulario" [p-breadcrumb]="breadcrumb">
+    <po-stepper>
+
+        <po-step p-label="Selecione o produto">
+            <po-table [p-striped]="true" [p-actions]="tableActions" [p-single-select]="true" [p-selectable]="true" p-service-api="http://200.98.81.201:40160/rest/Products/?VENDEDOR="> </po-table>
+        </po-step>
+
+        <po-step p-label="Upload foto">
+
+            <po-upload name='upload' p-label='Selecione a imagem' [p-url]="url" [p-drag-drop]="true"
+                (p-error)="changeEvent('p-error')" (p-success)="changeEvent('p-success')"
+                (p-upload)="changeEvent('p-upload')"></po-upload>
+
+        </po-step>
+
+        <po-step p-label="Reposição">
+            <div class="po-row">
+                <po-select class="po-md-4" name="all" (p-change)="changeEventRepo($event)" p-label="Opções para Reposição" [p-required]='true'
+                    [p-options]="all">
+                </po-select>
+                <po-button p-label='Enviar'></po-button>
+
+            </div>
+        </po-step>
+
+    </po-stepper>
+</po-page-default>
