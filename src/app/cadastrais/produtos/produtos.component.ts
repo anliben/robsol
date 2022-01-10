@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PoBreadcrumb, PoDynamicViewField, PoModalComponent, PoMultiselectOption, PoSelectOption } from '@po-ui/ng-components';
-import { PoPageDynamicTableActions, PoPageDynamicTableCustomAction, PoPageDynamicTableCustomTableAction, PoPageDynamicTableOptions } from '@po-ui/ng-templates';
-import { ProdutosService } from './produtos.service';
+import { PoBreadcrumb, PoDynamicViewField, PoModalComponent} from '@po-ui/ng-components';
+import { PoPageDynamicTableActions, PoPageDynamicTableCustomTableAction, PoPageDynamicTableOptions } from '@po-ui/ng-templates';
 
 @Component({
   selector: 'app-produtos',
@@ -10,8 +9,7 @@ import { ProdutosService } from './produtos.service';
   styleUrls: ['./produtos.component.scss']
 })
 export class ProdutosComponent implements OnInit {
-  @ViewChild('userDetailModal')
-  userDetailModal!: PoModalComponent;
+  @ViewChild('userDetailModal') userDetailModal: PoModalComponent | undefined;
 
   serviceApi = `http://200.98.81.201:40160/rest/Products?VENDEDOR=${localStorage.getItem('cod_vendedor')}`;
   detailedUser!: { codigo: any; descricao: any; ean: any; grupo: any; imagem: any; ncm: any; saldo: any; tipo: any; um: any; };
@@ -35,7 +33,18 @@ export class ProdutosComponent implements OnInit {
     }
   ];
 
-  readonly detailFields: Array<PoDynamicViewField> = [];
+  readonly detailFields: Array<PoDynamicViewField> = [
+    { property: 'codigo', gridColumns: 4 },
+    { property: 'um', gridColumns: 4 },
+    { property: 'tipo', gridColumns: 4 },
+    { property: 'descricao', gridColumns: 12, divider: 'Descrição' },
+    { property: 'grupo', gridColumns: 12, divider: 'Grupo' },
+    { property: 'formato', gridColumns: 4, divider: 'Formato' },
+    { property: 'cor', gridColumns: 4 },
+    { property: 'saldo', gridColumns: 4 },
+    { property: 'ncm', gridColumns: 4 },
+    { property: 'ean', gridColumns: 4 },
+  ];
 
 
   constructor(public http: HttpClient) {}
@@ -62,13 +71,12 @@ export class ProdutosComponent implements OnInit {
   }
 
 
-  private onClickUserDetail(user: { [x: string]: any; }) {
-    console.log(user)
+  private onClickUserDetail(user: any) {
     let produtosapi = this.serviceApi + `&codigo=${user['codigo']}`
     this.http.get(produtosapi).subscribe((res: any)=>{
       this.detailedUser = res
     })
-    this.userDetailModal.open();
+    this.userDetailModal!.open();
   }
 
 }

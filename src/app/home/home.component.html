@@ -71,7 +71,7 @@
         <div class="po-row" >
 
 
-          <po-widget *ngFor="let marca of marcas"
+          <po-widget class='po-widget' *ngFor="let marca of marcas"
           class="po-sm-12 po-md-4 po-lg-4"
           [p-height]="250"
           p-title="Marcas"
@@ -79,8 +79,7 @@
           p-secondary-label="Ver propagando"
           (p-primary-action)="visiteWebsite(marca.website)"
           (p-secondary-action)="modal.open()"
-
-        >
+          >
           <po-avatar class="po-md-4" p-size="lg" (p-click)="image.open()" p-src={{marca.avatar}}> </po-avatar>
 
           <div class="po-md-8">

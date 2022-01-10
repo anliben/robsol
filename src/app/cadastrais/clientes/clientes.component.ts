@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PoBreadcrumb, PoDynamicViewField, PoModalComponent } from '@po-ui/ng-components';
 import {  PoPageDynamicTableCustomTableAction, PoPageDynamicTableOptions } from '@po-ui/ng-templates';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-clientes',
@@ -21,17 +20,17 @@ export class ClientesComponent implements OnInit {
   };
 
   readonly detailFields: Array<PoDynamicViewField> = [
-    { property: 'codigo', gridLgColumns: 4, divider: 'Informações do Cliente'},
-    { property: 'razao_social', gridLgColumns: 4 },
-    { property: 'nome_fantasia', gridLgColumns: 4 },
-    { property: 'endereco', gridLgColumns: 4, divider: 'Informações de Endereço' },
+    { property: 'codigo', gridColumns: 12, divider: 'Informações do Cliente'},
+    { property: 'razao_social', gridColumns: 6 },
+    { property: 'nome_fantasia', gridColumns: 6 },
+    { property: 'endereco', gridColumns: 12, divider: 'Informações de Endereço' },
     { property: 'bairro', gridLgColumns: 4 },
     { property: 'cep', gridLgColumns: 4 },
     { property: 'cidade', gridLgColumns: 4},
     { property: 'uf', gridLgColumns: 4, gridSmColumns: 6 },
     { property: 'contato', divider: 'Informações de Contato'},
     { property: 'celular'},
-    { property: 'email', gridLgColumns: 12},
+    { property: 'email', gridColumns: 12},
     { property: 'filial'},
     { property: 'bandeira'},
   ];

@@ -10,12 +10,12 @@ p-title="Produtos"
 [p-quick-search-width]="quickSearchWidth"
 ></po-page-dynamic-table>
 
-<po-modal #userDetailModal p-size="lg" p-title="Detalhes do Produto">
+<po-modal #userDetailModal p-title="Detalhes do Produto">
   <p class="po-text-center">
 
     <img style="width: 300px; height: 200px; border-radius: 15%; " src="https://th.bing.com/th/id/OIP.j5nTJLNEvtl46Um-TxlyUgHaHa?pid=ImgDet&rs=1" />
   </p>
 
-  <po-dynamic-view [p-fields]="detailFields" [p-value]="detailedUser"> </po-dynamic-view>
+  <po-dynamic-view p-size="lg" [p-fields]="detailFields" [p-value]="detailedUser"> </po-dynamic-view>
 </po-modal>
 <router-outlet></router-outlet>

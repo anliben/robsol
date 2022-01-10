@@ -14,12 +14,11 @@
         </po-step>
 
         <po-step p-label="Reposição">
-            <div class="po-row">
-                <po-select class="po-md-4" name="all" (p-change)="changeEventRepo($event)" p-label="Opções para Reposição" [p-required]='true'
+            <div class='center'>
+                <po-select name="all" (p-change)="changeEventRepo($event)" p-label="Opções para Reposição" [p-required]='true'
                     [p-options]="all">
                 </po-select>
-                <po-button p-label='Enviar'></po-button>
-
+                <po-button p-label='Escolher'></po-button>
             </div>
         </po-step>
 
