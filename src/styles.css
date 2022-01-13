@@ -17,6 +17,11 @@
   margin-right: auto;
   width: 20%;
 }
+.center2{
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
 .center .po-button{
   width: 100%;
 }

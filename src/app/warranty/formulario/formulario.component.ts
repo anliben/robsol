@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { PoBreadcrumb, PoDynamicViewField, PoNotificationService, PoPageAction, PoSelectOption, PoStepperComponent, PoTableAction, PoTableColumn, PoTableColumnSort } from '@po-ui/ng-components';
+import { PoBreadcrumb, PoDynamicViewField, PoModalAction, PoModalComponent, PoNotificationService, PoSelectOption, PoStepperComponent, PoTableAction, PoTableColumn, PoUploadFileRestrictions } from '@po-ui/ng-components';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-formulario',
@@ -11,9 +12,31 @@ import { PoBreadcrumb, PoDynamicViewField, PoNotificationService, PoPageAction, 
 export class FormularioComponent implements OnInit {
   @ViewChild(PoStepperComponent)
   stepper!: PoStepperComponent;
+  @ViewChild('userDetailModal') userDetailModal: PoModalComponent | undefined;
+  @ViewChild('userDetailProduto') userDetailProduto: PoModalComponent | undefined;
+  @ViewChild('sucessData', { static: true })
+  sucessData!: PoModalComponent;
+
+  confirm: PoModalAction = {
+    action: () => {
+      this.sucessData.close();
+    },
+    label: 'Return'
+  };
 
   event!: string;
-  url: string = 'http://200.98.81.201:40160/rest/Products/?VENDEDOR=';
+  input: string | undefined;
+  produto: string | undefined;
+  detailedUser!: { codigo: any; descricao: any; ean: any; grupo: any; imagem: any; ncm: any; saldo: any; tipo: any; um: any; };
+  detailedProduto!: { codigo: any; descricao: any; ean: any; grupo: any; imagem: any; ncm: any; saldo: any; tipo: any; um: any; };
+  items: Array<any> =[]
+  upload: Array<any> =[]
+
+  restrictions: PoUploadFileRestrictions = {
+    allowedExtensions: ['.jpg', '.png', '.jpeg', '.webp'],
+
+  };
+
 
   public readonly breadcrumb: PoBreadcrumb = {
     items: [{ label: 'Home', link: '/' }, { label: 'Garantia', link: '/WARRANTY' }, { label: 'Formulario' }]
@@ -27,10 +50,19 @@ export class FormularioComponent implements OnInit {
   tableActions: Array<PoTableAction> = [
     {
       label: 'Details',
-      action: this.goNext.bind(this),
+      action: this.onClickProdutoDetail.bind(this),
       icon: 'po-icon po-icon-finance'
     }
   ]
+  columns: Array<PoTableColumn> = [
+    { property: 'codigo'},
+        { property: 'descricao'},
+        { property: 'cor'},
+        { property: 'marca'},
+        { property: 'linha'},
+        { property: 'material' },
+        { property: 'genero'},
+  ];
 
   readonly detailFields: Array<PoDynamicViewField> = [
     { property: 'codigo', gridColumns: 4 },
@@ -71,6 +103,29 @@ export class FormularioComponent implements OnInit {
       this.stepper.next()
     }
   }
+  confirmSubmit() {
+    this.sucessData.open();
+    this.stepper.first();
+  }
+
+  onClickUserDetail() {
+    console.log(this.input)
+    let url = environment.api + `Products/?codigo=${this.input}`
+    this.http.get(url).subscribe((response: any) =>{
+      this.items.push(response)
+    })
+    this.stepper.next();
+    //this.userDetailModal!.open();
+  }
+
+  private onClickProdutoDetail(user: any) {
+    let produtosapi = environment.api + `Products/&codigo=${user['codigo']}`
+    this.http.get(produtosapi).subscribe((res: any)=>{
+      this.detailedProduto = res
+    })
+    this.userDetailProduto!.open();
+  }
+
 
 
 }

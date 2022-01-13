@@ -1,42 +1,81 @@
 <po-page-default p-title="Formulario" [p-breadcrumb]="breadcrumb">
     <po-stepper>
-      <po-step p-label="Código do produto">
+      <po-step p-label="Codigo do produto">
 
         <div class='center'>
-          <po-input name="input" p-label="PO Input"> </po-input>
-          <po-select name="all" (p-change)="changeEventRepo($event)" p-label="Digite o código do Produto" [p-required]='true'
-              [p-options]="all">
-          </po-select>
-          <po-button p-label='Escolher'></po-button>
+          <po-input
+          [(ngModel)]="input" name="input" p-label="Codigo do produto"> </po-input>
+
+          <po-button (p-click)="onClickUserDetail()" p-label='Escolher'></po-button>
         </div>
 
       </po-step>
 
         <po-step p-label="Selecione o produto">
-            <po-table [p-striped]="true" [p-actions]="tableActions" [p-single-select]="true" [p-selectable]="true" p-service-api="http://200.98.81.201:40160/rest/Products/?VENDEDOR="> </po-table>
+            <po-table [p-striped]="true" [p-actions]="tableActions" [p-single-select]="true" [p-selectable]="true"
+            [p-columns]="columns"
+            [p-items]="items"
+            > </po-table>
+        </po-step>
+        <po-step  p-label="Opções de Troca">
+          <div class='center2'>
+
+            <po-select name="all" (p-change)="changeEventRepo($event)" p-label="Opções de Troca" [p-required]='true'
+            [p-options]="all">
+          </po-select>
+
+          <po-textarea name="nota" p-label="Nota adicional *"> </po-textarea>
+
+        </div>
+
         </po-step>
 
         <po-step p-label="Upload foto">
 
-            <po-upload name='upload' p-label='Selecione a imagem' [p-url]="url" [p-drag-drop]="true"
-                (p-error)="changeEvent('p-error')" (p-success)="changeEvent('p-success')"
-                (p-upload)="changeEvent('p-upload')"></po-upload>
-
+            <po-upload
+            name='upload'
+            p-label='Selecione até 3 imagem'
+            [p-drag-drop]="true"
+            [p-required]="true"
+            [p-multiple]="true"
+            [p-restrictions]="restrictions"
+            (p-success)="changeEvent('p-success')"
+            (p-error)="changeEvent('p-error')"
+            (p-upload)="changeEvent('p-upload')"
+            p-url='https://po-sample-api.herokuapp.com/v1/uploads/addFile'
+            ></po-upload>
         </po-step>
 
-        <po-step p-label="Reposição">
+        <po-step p-label="Espelho da Nota">
+
+        </po-step>
+        <po-step p-label="Finalização">
+          <po-button class="po-sm-12 po-mt-2" p-label="Confirm" (p-click)="confirmSubmit()"> </po-button>
 
         </po-step>
 
     </po-stepper>
-    
+
     <po-modal #userDetailModal p-title="Detalhes do Produto">
-      <p class="po-text-center">
+      <po-table
+      [p-striped]="true"
+      [p-auto-collapse]="true"
+      [p-hide-columns-manager]="true"
+      [p-sort]="true"
+      [p-actions]="tableActions"
+      [p-single-select]="true"
+      [p-selectable]="true"
+      [p-columns]="columns"
+      > </po-table>
 
-        <img style="width: 300px; height: 200px; border-radius: 15%; " src="https://th.bing.com/th/id/OIP.j5nTJLNEvtl46Um-TxlyUgHaHa?pid=ImgDet&rs=1" />
-      </p>
-
-      <po-dynamic-view p-size="lg" [p-fields]="detailFields" [p-value]="detailedUser"> </po-dynamic-view>
     </po-modal>
 
+    <po-modal #userDetailProduto p-title="Detalhes do Produto">
+      <po-dynamic-view p-size="lg" [p-fields]="detailFields" [p-value]="detailedProduto"> </po-dynamic-view>
+    </po-modal>
+    <po-modal #sucessData p-title="Confirmação" [p-primary-action]="confirm">
+      <div class="po-row">
+        <p class="po-sm-12 po-font-title">Formulário de garantia enviado!</p>
+      </div>
+    </po-modal>
 </po-page-default>
