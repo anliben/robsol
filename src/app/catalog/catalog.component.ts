@@ -19,7 +19,7 @@ export class CatalogComponent implements OnInit {
 
   tableCustomActions: Array<PoPageDynamicTableCustomTableAction> = [
     {
-      label: 'Boleto',
+      label: 'Catálogo',
       icon: 'po-icon po-icon-pdf'
     }
   ];
@@ -36,5 +36,5 @@ export class CatalogComponent implements OnInit {
       ]
     };
   }
- 
+
 }

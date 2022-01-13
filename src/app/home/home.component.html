@@ -1,3 +1,5 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <div class="po-wrapper">
   <div [class.cliente]="!vendedor" [class.vendedor]="vendedor">
     <po-menu [p-menus]="menus">
@@ -67,11 +69,11 @@
           </po-widget>
         </div>
       </div>
+
       <div *ngIf="!vendedor">
         <div class="po-row" >
 
-
-          <po-widget class='po-widget' *ngFor="let marca of marcas"
+          <po-widget #Card class='po-widget' *ngFor="let marca of marcas"
           class="po-sm-12 po-md-4 po-lg-4"
           [p-height]="250"
           p-title="Marcas"

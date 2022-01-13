@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { PoStorageService } from '@po-ui/ng-storage';
 import { HttpClient } from '@angular/common/http';
-import { PoMenuItem, PoMenuComponent, PoChartSerie, PoChartOptions, PoChartType } from '@po-ui/ng-components';
+import { PoMenuItem, PoMenuComponent, PoChartSerie, PoChartOptions, PoChartType, PoWidgetComponent } from '@po-ui/ng-components';
 import { environment } from 'src/environments/environment';
 
 @Component({
