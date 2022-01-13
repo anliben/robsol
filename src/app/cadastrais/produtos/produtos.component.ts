@@ -35,7 +35,7 @@ export class ProdutosComponent implements OnInit {
 
   readonly detailFields: Array<PoDynamicViewField> = [
     { property: 'codigo', gridColumns: 4 },
-    { property: 'um', gridColumns: 4 },
+    { property: 'um', gridColumns: 4, label: 'UM' },
     { property: 'tipo', gridColumns: 4 },
     { property: 'descricao', gridColumns: 12, divider: 'Descrição' },
     { property: 'grupo', gridColumns: 12, divider: 'Grupo' },

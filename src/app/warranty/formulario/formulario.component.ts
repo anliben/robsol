@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { PoBreadcrumb, PoNotificationService, PoPageAction, PoSelectOption, PoStepperComponent, PoTableAction, PoTableColumn, PoTableColumnSort } from '@po-ui/ng-components';
+import { PoBreadcrumb, PoDynamicViewField, PoNotificationService, PoPageAction, PoSelectOption, PoStepperComponent, PoTableAction, PoTableColumn, PoTableColumnSort } from '@po-ui/ng-components';
 
 @Component({
   selector: 'app-formulario',
@@ -32,6 +32,18 @@ export class FormularioComponent implements OnInit {
     }
   ]
 
+  readonly detailFields: Array<PoDynamicViewField> = [
+    { property: 'codigo', gridColumns: 4 },
+    { property: 'um', gridColumns: 4, label: 'UM' },
+    { property: 'tipo', gridColumns: 4 },
+    { property: 'descricao', gridColumns: 12, divider: 'Descrição' },
+    { property: 'grupo', gridColumns: 12, divider: 'Grupo' },
+    { property: 'formato', gridColumns: 4, divider: 'Formato' },
+    { property: 'cor', gridColumns: 4 },
+    { property: 'saldo', gridColumns: 4 },
+    { property: 'ncm', gridColumns: 4 },
+    { property: 'ean', gridColumns: 4 },
+  ];
 
 
   constructor(public http: HttpClient, private poNotification: PoNotificationService) {}
