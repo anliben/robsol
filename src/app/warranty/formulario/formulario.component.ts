@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { PoBreadcrumb, PoDynamicViewField, PoModalAction, PoModalComponent, PoNotificationService, PoSelectOption, PoStepperComponent, PoTableAction, PoTableColumn, PoUploadFileRestrictions } from '@po-ui/ng-components';
+import { PoBreadcrumb, PoDynamicViewField, PoModalAction,
+  PoModalComponent, PoNotificationService, PoSelectOption, PoStepperComponent, PoTableAction,
+  PoTableColumn, PoUploadFileRestrictions } from '@po-ui/ng-components';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -28,13 +30,12 @@ export class FormularioComponent implements OnInit {
   input: string | undefined;
   produto: string | undefined;
   detailedUser!: { codigo: any; descricao: any; ean: any; grupo: any; imagem: any; ncm: any; saldo: any; tipo: any; um: any; };
-  detailedProduto!: { codigo: any; descricao: any; ean: any; grupo: any; imagem: any; ncm: any; saldo: any; tipo: any; um: any; };
+  detailedProduto: Array<any> = []
   items: Array<any> =[]
   upload: Array<any> =[]
 
   restrictions: PoUploadFileRestrictions = {
     allowedExtensions: ['.jpg', '.png', '.jpeg', '.webp'],
-
   };
 
 
@@ -55,28 +56,36 @@ export class FormularioComponent implements OnInit {
     }
   ]
   columns: Array<PoTableColumn> = [
-    { property: 'codigo'},
-        { property: 'descricao'},
-        { property: 'cor'},
-        { property: 'marca'},
-        { property: 'linha'},
-        { property: 'material' },
-        { property: 'genero'},
+    { property: 'nota'},
+    { property: 'item'},
+    { property: 'cod_produto'},
+    { property: 'quantidade'},
+    { property: 'preco'},
+    { property: 'emissao' },
   ];
 
   readonly detailFields: Array<PoDynamicViewField> = [
-    { property: 'codigo', gridColumns: 4 },
-    { property: 'um', gridColumns: 4, label: 'UM' },
-    { property: 'tipo', gridColumns: 4 },
-    { property: 'descricao', gridColumns: 12, divider: 'Descrição' },
-    { property: 'grupo', gridColumns: 12, divider: 'Grupo' },
-    { property: 'formato', gridColumns: 4, divider: 'Formato' },
-    { property: 'cor', gridColumns: 4 },
-    { property: 'saldo', gridColumns: 4 },
-    { property: 'ncm', gridColumns: 4 },
-    { property: 'ean', gridColumns: 4 },
-  ];
-
+    { property: 'item'},
+    { property: 'cod_produto'},
+    { property: 'preco'},
+    { property: 'nota'},
+    { property: 'quantidade'},
+    { property: 'emissao'},
+    { property: 'bairro_empresa', divider: 'Dados da empresa'},
+    { property: 'nome_empresa', gridColumns: 6},
+    { property: 'cnpj'},
+    { property: 'endereco_empresa', gridColumns: 8},
+  { property: 'cidade_empresa'},
+  { property: 'estado_empresa'},
+  { property: 'inscr_estadual'},
+  { property: 'base_icm', divider: 'Detalhes '},
+  { property: 'chave_nfe'},
+  { property: 'desc_cfop', gridColumns: 12},
+  { property: 'filial_faturamento'},
+  { property: 'serie'},
+  { property: 'valor_icm'},
+  { property: 'valor_ipi'},
+];
 
   constructor(public http: HttpClient, private poNotification: PoNotificationService) {}
 
@@ -110,22 +119,30 @@ export class FormularioComponent implements OnInit {
 
   onClickUserDetail() {
     console.log(this.input)
-    let url = environment.api + `Products/?codigo=${this.input}`
+    let url = environment.api + `FieldService/?codigo=${this.input}&cod_cliente=05290313&loja_cliente=${localStorage.getItem('loja_cliente')}`
     this.http.get(url).subscribe((response: any) =>{
-      this.items.push(response)
+      response['items'].forEach((element: any) =>{
+        this.items.push({
+          nota: element['nota'],
+          item: element['item'],
+          cod_produto: element['cod_produto'],
+          quantidade: element['quantidade'],
+          preco: element['preco'],
+          emissao: element['emissao']
+        })
+      })
     })
     this.stepper.next();
     //this.userDetailModal!.open();
   }
 
   private onClickProdutoDetail(user: any) {
-    let produtosapi = environment.api + `Products/&codigo=${user['codigo']}`
-    this.http.get(produtosapi).subscribe((res: any)=>{
-      this.detailedProduto = res
+    console.log(user['cod_produto'])
+    let url = environment.api + `FieldService/?codigo=${user['cod_produto']}&cod_cliente=05290313&loja_cliente=${localStorage.getItem('loja_cliente')}`
+    this.http.get(url).subscribe((res: any)=>{
+      console.log(res['items'][0])
+      this.detailedProduto = res['items'][0]
     })
     this.userDetailProduto!.open();
   }
-
-
-
 }

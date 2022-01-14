@@ -59,8 +59,8 @@ export class LoginComponent {
     this.httpClient.post(url_login, body, {headers: this.headers}).subscribe((res: any) => {
       const fmt_res: any = res['statusrequest'];
 
-        const tokens = fmt_res[0].user_token;
-        localStorage.setItem('access_token', tokens);
+
+        localStorage.setItem('access_token', fmt_res[0].user_token);
 
             if(fmt_res[0].cod_cliente.trim() == ''){
               localStorage.setItem('tipo', 'vendedor');
@@ -70,12 +70,15 @@ export class LoginComponent {
             }
 
             if (fmt_res[0].code == '#200') {
+
             localStorage.setItem('user', fmt_res[0].nome_usuario);
             localStorage.setItem('cod_usuario', fmt_res[0].Cod_Usuario);
             localStorage.setItem('cod_vendedor', fmt_res[0].cod_vendedor.trim());
             localStorage.setItem('cod_cliente', fmt_res[0].cod_cliente.trim());
             localStorage.setItem('menu_acesso', fmt_res[0].menu_acesso);
+            localStorage.setItem('loja_cliente', fmt_res[0].loja_cliente);
             this.router.navigate(['/']);
+
           } else{
             this.poNotification.error('Falha na autenticação');
             }
