@@ -58,8 +58,7 @@ export class LoginComponent {
 
     this.httpClient.post(url_login, body, {headers: this.headers}).subscribe((res: any) => {
       const fmt_res: any = res['statusrequest'];
-
-
+      console.log(fmt_res)
         localStorage.setItem('access_token', fmt_res[0].user_token);
 
             if(fmt_res[0].cod_cliente.trim() == ''){

@@ -14,6 +14,7 @@ export class ProdutosComponent implements OnInit {
   serviceApi = `http://200.98.81.201:40160/rest/Products?VENDEDOR=${localStorage.getItem('cod_vendedor')}`;
   detailedUser!: { codigo: any; descricao: any; ean: any; grupo: any; imagem: any; ncm: any; saldo: any; tipo: any; um: any; };
   quickSearchWidth: number = 3;
+  image: string = '';
 
   readonly actions: PoPageDynamicTableActions = {
     new: '/',
@@ -74,6 +75,7 @@ export class ProdutosComponent implements OnInit {
   private onClickUserDetail(user: any) {
     let produtosapi = this.serviceApi + `&codigo=${user['codigo']}`
     this.http.get(produtosapi).subscribe((res: any)=>{
+      this.image = res['image']
       this.detailedUser = res
     })
     this.userDetailModal!.open();

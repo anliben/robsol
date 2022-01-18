@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { PoStorageService } from '@po-ui/ng-storage';
 import { HttpClient } from '@angular/common/http';
-import { PoMenuItem, PoMenuComponent, PoChartSerie, PoChartOptions, PoChartType, PoWidgetComponent } from '@po-ui/ng-components';
+import { PoMenuItem, PoMenuComponent, PoChartSerie, PoChartOptions, PoChartType } from '@po-ui/ng-components';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -111,6 +111,11 @@ export class HomeComponent {
   constructor(private router: Router, private storage: PoStorageService, private http: HttpClient) {}
 
   ngOnInit(): void {
+
+    const url_graph = environment.api + 'Metas'
+    this.http.get(url_graph).subscribe((response: any) =>{
+      console.log(response)
+    })
 
     if(localStorage.getItem('tipo') == 'vendedor'){
       this.vendedor = !this.vendedor
