@@ -20,6 +20,8 @@ import { CatalogComponent } from './catalog/catalog.component';
 import { FormularioComponent } from './warranty/formulario/formulario.component';
 import { LoginService } from './login/login.service';
 import { AuthInterceptor } from './auth/auth-config.interceptor';
+import { MuralComponent } from './mural/mural.component';
+import { MuralModule } from './mural/mural.module';
 
 
 
@@ -33,7 +35,8 @@ import { AuthInterceptor } from './auth/auth-config.interceptor';
     PoNotificationModule,
     PoLoadingModule,
     PoFieldModule,
-    PoStorageModule.forRoot()
+    PoStorageModule.forRoot(),
+    MuralModule
   ],
   declarations: [
     AppComponent,
@@ -45,7 +48,8 @@ import { AuthInterceptor } from './auth/auth-config.interceptor';
     PedidosComponent,
     WarrantyComponent,
     CatalogComponent,
-    FormularioComponent
+    FormularioComponent,
+    MuralComponent
    ],
    providers: [
     LoginService,

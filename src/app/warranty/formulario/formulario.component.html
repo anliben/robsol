@@ -1,21 +1,33 @@
 <po-page-default p-title="Formulario" [p-breadcrumb]="breadcrumb">
-    <po-stepper>
-      <po-step p-label="Codigo do produto">
+    <po-stepper #stepper [p-step-icons]='true' [p-step-size]="32">
+      <po-step p-label="Codigo do produto" (p-can-active-next-step)="canActiveNextStep.bind(this, produtoForm!)">
 
-        <div class='center'>
-          <po-input
-          [(ngModel)]="input" name="input" p-label="Codigo do produto"> </po-input>
+          <po-widget
+        class="po-md-12"
+        [p-height]="380"
+        [p-primary-label]="nextLabelWidget"
+        p-title="Purchase"
+        (p-primary-action)="stepper.next()"
+          >
+          <form #produtoForm="ngForm">
 
-          <po-button (p-click)="onClickUserDetail()" p-label='Escolher'></po-button>
-        </div>
+            <po-input
+            p-clean='true'
+            [(ngModel)]="input" name="input" p-clean="" p-label="Codigo do produto" p-required> </po-input>
+
+          </form>
+        </po-widget>
 
       </po-step>
 
-        <po-step p-label="Selecione o produto">
+        <po-step  p-label="Selecione o produto" (p-can-active-next-step)="canActiveNextStep.bind(this, produtoInputForm)">
+          <form #produtoInputForm="ngForm">
+
             <po-table [p-striped]="true" [p-actions]="tableActions" [p-single-select]="true" [p-selectable]="true"
             [p-columns]="columns"
             [p-items]="items"
             > </po-table>
+          </form>
         </po-step>
         <po-step  p-label="Opções de Troca">
           <div class='center2'>

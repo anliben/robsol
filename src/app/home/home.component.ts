@@ -108,13 +108,28 @@ export class HomeComponent {
 
   ]
 
+  mural: Array<any> = []
+
   constructor(private router: Router, private storage: PoStorageService, private http: HttpClient) {}
 
   ngOnInit(): void {
 
+
+    const url_metas = environment.api + `/Mural`
+    this.http.get(url_metas).subscribe((response: any) =>{
+      response[`items`].forEach((element: any) => {
+        let data = element['data_publicacao'].split('/')[0]
+        let today = new Date()
+        var dd = today.getDate()
+        if(parseInt(data) + 4 <= dd){
+          this.mural.push({codigo: element[`codigo`], assunto: element[`assunto`],conteudo: element[`conteudo`], data_publicacao: element['data_publicacao']})
+          return
+        }
+      });
+    })
+
     const url_graph = environment.api + 'Metas'
     this.http.get(url_graph).subscribe((response: any) =>{
-      console.log(response)
     })
 
     if(localStorage.getItem('tipo') == 'vendedor'){
@@ -137,7 +152,6 @@ export class HomeComponent {
     })
 
   }
-
 
   openTitulos() {
     this.router.navigate(['FINANCIAL'], { queryParams: {status: "Em Aberto"} })

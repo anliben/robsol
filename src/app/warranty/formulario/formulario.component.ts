@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { PoBreadcrumb, PoDynamicViewField, PoModalAction,
-  PoModalComponent, PoNotificationService, PoSelectOption, PoStepperComponent, PoTableAction,
+  PoModalComponent, PoNotificationService, PoSelectOption, PoStepComponent, PoStepperComponent, PoTableAction,
   PoTableColumn, PoUploadFileRestrictions } from '@po-ui/ng-components';
 import { environment } from 'src/environments/environment';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-formulario',
@@ -15,9 +16,14 @@ export class FormularioComponent implements OnInit {
   @ViewChild(PoStepperComponent)
   stepper!: PoStepperComponent;
   @ViewChild('userDetailModal') userDetailModal: PoModalComponent | undefined;
+  @ViewChild('produtoForm', { static: true }) produtoForm: NgForm | undefined;
+  @ViewChild('produtoInputForm', { static: true })
+  produtoInputForm!: NgForm;
   @ViewChild('userDetailProduto') userDetailProduto: PoModalComponent | undefined;
+
   @ViewChild('sucessData', { static: true })
   sucessData!: PoModalComponent;
+  currentActiveStep: PoStepComponent | undefined;
 
   confirm: PoModalAction = {
     action: () => {
@@ -27,6 +33,7 @@ export class FormularioComponent implements OnInit {
   };
 
   event!: string;
+  nextLabelWidget: string = 'Next Step';
   input: string | undefined;
   produto: string | undefined;
   detailedUser!: { codigo: any; descricao: any; ean: any; grupo: any; imagem: any; ncm: any; saldo: any; tipo: any; um: any; };
@@ -63,6 +70,10 @@ export class FormularioComponent implements OnInit {
     { property: 'preco'},
     { property: 'emissao' },
   ];
+
+  canActiveNextStep(form: NgForm) {
+    return form.valid;
+  }
 
   readonly detailFields: Array<PoDynamicViewField> = [
     { property: 'item'},

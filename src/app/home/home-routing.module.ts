@@ -9,7 +9,7 @@ import { AuthGuardService } from '../auth/auth-guard.service';
 
 const homeRoutes: Routes = [
   { path: '', component: HomeComponent,
-    canActivate: [AuthGuardService],
+    // canActivate: [AuthGuardService],
     children: [] },
     {path:'login', component: LoginComponent},
     {path: 'CUSTOMERS', loadChildren: () => import('../cadastrais/clientes/clientes.module').then(m => m.ClientesModule)},
@@ -21,6 +21,7 @@ const homeRoutes: Routes = [
     {path: 'CATALOG', loadChildren: () => import('../catalog/catalog.module').then(m => m.CatalogModule)},
     {path: 'WARRANTY', loadChildren: () => import('../warranty/warranty.module').then(m => m.WarrantyModule)},
     {path: 'FORMULARIO', loadChildren: () => import('../warranty/formulario/formulario.module').then(m => m.FormularioModule)},
+    {path: 'MURAL', loadChildren: () => import('../mural/mural.module').then(m => m.MuralModule)},
   ];
 
 @NgModule({
