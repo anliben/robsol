@@ -1,94 +1,71 @@
 <po-page-default p-title="Formulario" [p-breadcrumb]="breadcrumb">
-    <po-stepper #stepper [p-step-icons]='true' [p-step-size]="32">
-      <po-step p-label="Codigo do produto" (p-can-active-next-step)="canActiveNextStep.bind(this, produtoForm!)">
 
-          <po-widget
-        class="po-md-12"
-        [p-height]="380"
-        [p-primary-label]="nextLabelWidget"
-        p-title="Purchase"
-        (p-primary-action)="stepper.next()"
-          >
-          <form #produtoForm="ngForm">
 
-            <po-input
-            p-clean='true'
-            [(ngModel)]="input" name="input" p-clean="" p-label="Codigo do produto" p-required> </po-input>
+  <po-widget *ngIf="codigo" class="po-md-12" [p-height]="380" p-primary-label="Próximo" p-title="Purchase"
+    (p-primary-action)="valited('codigo')">
 
-          </form>
-        </po-widget>
+      <po-input p-clean='true' [(ngModel)]="input" name="input" p-clean="" p-label="Codigo do produto" p-required>
+      </po-input>
 
-      </po-step>
+  </po-widget>
 
-        <po-step  p-label="Selecione o produto" (p-can-active-next-step)="canActiveNextStep.bind(this, produtoInputForm)">
-          <form #produtoInputForm="ngForm">
+  <po-widget *ngIf='chooseProduct'>
+    <po-button *ngIf="buttonChooseProduct" p-size='lg' p-label='Escolher' (click)="valited('chooseProduct')"></po-button>
+    <form #produtoInputForm="ngForm">
 
-            <po-table [p-striped]="true" [p-actions]="tableActions" [p-single-select]="true" [p-selectable]="true"
-            [p-columns]="columns"
-            [p-items]="items"
-            > </po-table>
-          </form>
-        </po-step>
-        <po-step  p-label="Opções de Troca">
-          <div class='center2'>
+      <po-table (p-selected)="chooseSelect($event)"
+      (p-unselected)="chooseDeselect($event)" [p-striped]="true" [p-actions]="tableActions" [p-single-select]="true" [p-selectable]="true"
+        [p-columns]="columns" [p-items]="items"> </po-table>
+    </form>
 
-            <po-select name="all" (p-change)="changeEventRepo($event)" p-label="Opções de Troca" [p-required]='true'
-            [p-options]="all">
-          </po-select>
+  </po-widget>
 
-          <po-textarea name="nota" p-label="Nota adicional *"> </po-textarea>
+  <po-widget *ngIf="exchange">
+    <po-select name="all" (p-change)="changeEventRepo($event)" p-label="Opções de Troca*" [p-required]='true'
+      [p-options]="all">
+    </po-select>
 
-        </div>
+    <po-textarea name="nota" [(ngModel)]="descricao" name="descricao"  p-label="Nota adicional *"> </po-textarea>
 
-        </po-step>
+    <po-button p-size='lg' p-label='Escolher' (click)="valited('buttonExchange')"></po-button>
 
-        <po-step p-label="Upload foto">
 
-            <po-upload
-            name='upload'
-            p-label='Selecione até 3 imagem'
-            [p-drag-drop]="true"
-            [p-required]="true"
-            [p-multiple]="true"
-            [p-restrictions]="restrictions"
-            (p-success)="changeEvent('p-success')"
-            (p-error)="changeEvent('p-error')"
-            (p-upload)="changeEvent('p-upload')"
-            p-url='https://po-sample-api.herokuapp.com/v1/uploads/addFile'
-            ></po-upload>
-        </po-step>
+  </po-widget>
 
-        <po-step p-label="Espelho da Nota">
 
-        </po-step>
-        <po-step p-label="Finalização">
-          <po-button class="po-sm-12 po-mt-2" p-label="Confirm" (p-click)="confirmSubmit()"> </po-button>
+  <po-widget *ngIf="uploaded">
 
-        </po-step>
+    <po-upload name='image' p-label='Selecione até 3 imagem' [p-drag-drop]="true" [p-required]="true"
+      [p-multiple]="true" [p-restrictions]="restrictions" (p-success)="valited('uploaded')"
+      (p-error)="valited('uploaded')" (p-upload)="changeEvent('p-upload')"
+      p-url='https://api.imgbb.com/1/upload?expiration=600&key=bf0362a061f1cada6cb4cfc1885f36c4'></po-upload>
+  </po-widget>
 
-    </po-stepper>
+  <po-widget *ngIf="notes">
+    <h1>Espelho de notas</h1>
+    
+    <po-button p-size='lg' p-label='Escolher' (click)="valited('notes')"></po-button>
+    
+  </po-widget>
+  
+  <po-widget *ngIf="finish">
+    <h1>Confirmar todas as informações</h1>
+    <po-button class="po-sm-12 po-mt-2" p-label="Confirm"> </po-button>
+  </po-widget>
 
-    <po-modal #userDetailModal p-title="Detalhes do Produto">
-      <po-table
-      [p-striped]="true"
-      [p-auto-collapse]="true"
-      [p-hide-columns-manager]="true"
-      [p-sort]="true"
-      [p-actions]="tableActions"
-      [p-single-select]="true"
-      [p-selectable]="true"
-      [p-columns]="columns"
-      > </po-table>
+  <po-modal #userDetailModal p-title="Detalhes do Produto">
+    <po-table [p-striped]="true" [p-auto-collapse]="true" [p-hide-columns-manager]="true" [p-sort]="true"
+      [p-actions]="tableActions" [p-single-select]="true" [p-selectable]="true" [p-columns]="columns"> </po-table>
 
-    </po-modal>
+  </po-modal>
 
-    <po-modal #userDetailProduto p-title="Detalhes do Produto">
-      <po-dynamic-view p-size="lg" [p-fields]="detailFields" [p-value]="detailedProduto"> </po-dynamic-view>
-    </po-modal>
+  <po-modal #userDetailProduto p-title="Detalhes do Produto">
+    <po-dynamic-view p-size="lg" [p-fields]="detailFields" [p-value]="detailedProduto"> </po-dynamic-view>
+  </po-modal>
 
-    <po-modal #sucessData p-title="Confirmação" [p-primary-action]="confirm">
-      <div class="po-row">
-        <p class="po-sm-12 po-font-title">Formulário de garantia enviado!</p>
-      </div>
-    </po-modal>
+  <po-modal #sucessData p-title="Confirmação" [p-primary-action]="confirm">
+    <div class="po-row">
+      <p class="po-sm-12 po-font-title">Formulário de garantia enviado!</p>
+    </div>
+  </po-modal>
 </po-page-default>
