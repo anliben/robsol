@@ -17,19 +17,19 @@
             <po-chart
               class="po-md-6 po-mt-2"
               p-title="Metas Mensais"
-              [p-options]="chartAreaMOptions"
-              [p-categories]="chartAreaMCategories"
-              [p-series]="chartAreaMSeries"
+              [p-options]="mensalOptions"
+              [p-categories]="mensalCategories"
+              [p-series]="mensalSeries"
             >
             </po-chart>
 
             <po-chart
               class="po-md-6 po-mt-2"
               p-title="Metas Quadrimensais"
-              [p-options]="chartAreaQOptions"
-              [p-categories]="chartAreaQCategories"
-              [p-series]="chartAreaQSeries"
-            >
+              [p-options]="quadrimensalOptions"
+              [p-categories]="quadrimensalCategories"
+              [p-series]="quadrimensalSeries">
+
             </po-chart>
           </div>
 
@@ -40,7 +40,7 @@
             (p-primary-action)="openTitulos()"
           >
             <div class="po-font-subtitle po-text-center">
-              {{ titulosAbertos }}
+              {{ graphPedidosAnalise }}
             </div>
           </po-widget>
 
@@ -49,7 +49,7 @@
             p-primary-label="Details"
             p-title="Pedidos no Mês"
           >
-            <div class="po-font-subtitle po-text-center">lorem ipsum dolor</div>
+            <div class="po-font-subtitle po-text-center"> {{ graphPedidosMes }}</div>
           </po-widget>
 
           <po-widget
@@ -57,14 +57,14 @@
             p-primary-label="Details"
             p-title="Titulos em Aberto"
           >
-            <div class="po-font-subtitle po-text-center">lorem ipsum dolor</div>
+            <div class="po-font-subtitle po-text-center">{{ graphTitulosAberto }}</div>
           </po-widget>
           <po-widget
             class="po-lg-3 po-mt-2"
             p-primary-label="Details"
             p-title="Total de comissões"
           >
-            <div class="po-font-subtitle po-text-center">lorem ipsum dolor</div>
+            <div class="po-font-subtitle po-text-center"> {{graphComissoes}} </div>
           </po-widget>
         </div>
       </div>
@@ -72,12 +72,21 @@
       <div *ngIf="!vendedor">
         <div class="po-row" >
 
+          <po-widget *ngFor="let m of mural"
+          class="po-sm-12 po-md-4 po-lg-4"
+          [p-height]="250"
+          p-title="Data: {{m.data_publicacao}}"
+        >
+          <po-info p-label='Assunto: {{m.assunto}}' p-value="{{m.conteudo}}"> </po-info>
+        </po-widget>
+
+
           <po-widget #Card class='po-widget' *ngFor="let marca of marcas"
           class="po-sm-12 po-md-4 po-lg-4"
           [p-height]="250"
           p-title="Marcas"
           p-primary-label="Visite Web site"
-          p-secondary-label="Ver propagando"
+          p-secondary-label="Ver propaganda"
           (p-primary-action)="visiteWebsite(marca.website)"
           (p-secondary-action)="modal.open()"
           >
@@ -99,13 +108,6 @@
           </po-modal>
         </po-widget>
 
-        <po-widget *ngFor="let m of mural"
-        class="po-sm-12 po-md-4 po-lg-4"
-        [p-height]="250"
-        p-title="Data: {{m.data_publicacao}}"
-      >
-        <po-info p-label='Assunto: {{m.assunto}}' p-value="{{m.conteudo}}"> </po-info>
-      </po-widget>
 
 
         </div>

@@ -22,52 +22,15 @@ export class HomeComponent {
   pedidos: string = environment.api + `Sales/?VENDEDOR=${localStorage.getItem('cod_vendedor')}`;
   isCollapsed = true;
 
-  chartAreaMOptions: PoChartOptions = {
-    axis: {
-      maxRange: 700,
-      gridLines: 8
-    }
-  };
-  chartAreaMCategories: Array<string> = ['Jan-18', 'Jul-18', 'Jan-19', 'Jul-19', 'Jan-20', 'Jul-20', 'Jan-21'];
-  chartAreaMSeries: Array<PoChartSerie> = [
-    { label: 'Mensal', data: [550, 497, 532, 550, 530, 565, 572], type: PoChartType.Area },
-    {
-      label: 'Quadrimestre',
-      data: [550, 612, 525, 373, 342, 297, 282],
-      type: PoChartType.Line,
-      color: 'po-color-07'
-    }
-  ];
-
-  chartAreaQOptions: PoChartOptions = {
-    axis: {
-      maxRange: 700,
-      gridLines: 8
-    }
-  };
-  chartAreaQCategories: Array<string> = ['Jan-18', 'Jul-18', 'Jan-19', 'Jul-19', 'Jan-20', 'Jul-20', 'Jan-21'];
-  chartAreaQSeries: Array<PoChartSerie> = [
-    { label: 'Mensal', data: [550, 497, 532, 550, 530, 565, 572], type: PoChartType.Area },
-    {
-      label: 'Quadrimestre',
-      data: [550, 612, 525, 373, 342, 297, 282],
-      type: PoChartType.Line,
-      color: 'po-color-07'
-    }
-  ];
-
+  graphComissoes: string = '';
+  graphPedidosAnalise: string = '';
+  graphPedidosMes: string = '';
+  graphTitulosAberto: string = '';
 
   readonly menus: Array<PoMenuItem> = [];
   titulosAbertos: number = 0;
   comissaoBrl: string = '';
 
-  coffeeProduction: Array<PoChartSerie> = [
-    { label: 'Brazil', data: 2796, tooltip: 'Brazil (South America)', color: 'color-10' },
-    { label: 'Vietnam', data: 1076, tooltip: 'Vietnam (Asia)' },
-    { label: 'Colombia', data: 688, tooltip: 'Colombia (South America)' },
-    { label: 'Indonesia', data: 682, tooltip: 'Indonesia (Asia/Oceania)' },
-    { label: 'Peru', data: 273, tooltip: 'Peru (South America)' }
-  ];
 
   marcas: Array<any> = [
     {
@@ -112,8 +75,21 @@ export class HomeComponent {
 
   constructor(private router: Router, private storage: PoStorageService, private http: HttpClient) {}
 
-  ngOnInit(): void {
+  quadrimensalOptions: PoChartOptions = {}
+  quadrimensalCategories: Array<string> = [];
+  quadrimensalSeries: Array<PoChartSerie> = [];
 
+  dataMensal: any[] = []
+
+  mensalOptions: PoChartOptions = {};
+  mensalCategories: Array<string> = [];
+  mensalSeries: Array<PoChartSerie> = [
+  ];
+  ngOnInit(): void {
+    let pp =  environment.api +  `Financial?VENDEDOR=${localStorage.getItem('cod_vendedor')}&status=Em Aberto`;
+    this.http.get(pp).subscribe((res: any) => {
+      this.graphTitulosAberto = res['items'].length
+    })
 
     const url_metas = environment.api + `/Mural`
     this.http.get(url_metas).subscribe((response: any) =>{
@@ -121,7 +97,7 @@ export class HomeComponent {
         let data = element['data_publicacao'].split('/')[0]
         let today = new Date()
         var dd = today.getDate()
-        if(parseInt(data) + 4 <= dd){
+        if((parseInt(data) + 4) >= dd){
           this.mural.push({codigo: element[`codigo`], assunto: element[`assunto`],conteudo: element[`conteudo`], data_publicacao: element['data_publicacao']})
           return
         }
@@ -130,6 +106,58 @@ export class HomeComponent {
 
     const url_graph = environment.api + 'Metas'
     this.http.get(url_graph).subscribe((response: any) =>{
+      console.log(response)
+      let mensalC: any[] = []
+      let mensalS: any[] = []
+
+      let quadrimensalC: any[] = []
+      let quadrimensalS: any[] = []
+
+      let analises = response['items'][0]
+
+
+      response['items'][1].forEach((element: any) =>{
+        mensalS.push(parseFloat(element['meta'].trim().replace(',', '.')))
+        mensalC.push(element['dia'])
+        this.mensalOptions = {axis: {
+          maxRange: parseFloat(element['venda'].trim().replace(',', '.')),
+          gridLines: 8
+        }}
+
+      })
+      response['items'][2].forEach((element: any) =>{
+        console.log(element)
+        quadrimensalS.push(parseFloat(element['meta'].trim().replace(',', '.')))
+        quadrimensalC.push(element['mes'])
+        this.quadrimensalOptions = {axis: {
+          maxRange: parseFloat(element['venda'].trim().replace(',', '.')),
+          gridLines: 8
+        }}
+
+      })
+      this.mensalCategories = mensalC
+
+      this.mensalSeries = [{
+        label: 'Mensal',
+        data: mensalS,
+        type: PoChartType.Line,
+        color: 'po-color-07'
+      }]
+
+      this.quadrimensalCategories = quadrimensalC
+
+      this.quadrimensalSeries = [{
+        label: 'Quadrimensal',
+        data: quadrimensalS,
+        type: PoChartType.Line,
+        color: 'po-color-07'
+      }]
+
+
+      this.graphComissoes = analises['comissao_mes']
+      this.graphPedidosAnalise = analises['pedidos_analise']
+      this.graphPedidosMes = analises['pedidos_mes']
+
     })
 
     if(localStorage.getItem('tipo') == 'vendedor'){
@@ -150,7 +178,6 @@ export class HomeComponent {
       });
       this.menus.push( {"label": "loggout","icon": "po-icon-exit","shortLabel": "logout","action": this.clearToken.bind(this),"link": "/login"})
     })
-
   }
 
   openTitulos() {
@@ -163,6 +190,7 @@ export class HomeComponent {
   visiteWebsite(site: any) {
     window.open(`${site}`, '_blank');
   }
+
 
 
   clearToken(menu: PoMenuItem){

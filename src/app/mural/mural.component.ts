@@ -22,12 +22,11 @@ export class MuralComponent implements OnInit {
 
     const url_metas = environment.api + `/Mural`
     this.http.get(url_metas).subscribe((response: any) =>{
-      console.log(response)
       response[`items`].forEach((element: any) => {
         let data = element['data_publicacao'].split('/')[0]
         let today = new Date()
         var dd = today.getDate()
-        if(parseInt(data) + 4 <= dd){
+        if((parseInt(data) + 4) <= dd){
           this.mural.push({codigo: element[`codigo`], assunto: element[`assunto`],conteudo: element[`conteudo`], data_publicacao: element['data_publicacao']})
           return
         }
