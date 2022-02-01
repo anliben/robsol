@@ -112,12 +112,15 @@ export class HomeComponent {
 
       let quadrimensalC: any[] = []
       let quadrimensalS: any[] = []
+      let meta: number = 0
+      let mes: number = 0
 
       let analises = response['items'][0]
 
 
       response['items'][1].forEach((element: any) =>{
-        mensalS.push(parseFloat(element['meta'].trim().replace(',', '.')))
+        mensalS.push(parseFloat(element['venda'].trim().replace(',', '.')))
+        meta = parseFloat(element['meta'].trim().replace(',', '.'))
         mensalC.push(element['dia'])
         this.mensalOptions = {axis: {
           maxRange: parseFloat(element['venda'].trim().replace(',', '.')),
@@ -127,8 +130,9 @@ export class HomeComponent {
       })
       response['items'][2].forEach((element: any) =>{
         console.log(element)
-        quadrimensalS.push(parseFloat(element['meta'].trim().replace(',', '.')))
+        quadrimensalS.push(parseFloat(element['venda'].trim().replace(',', '.')))
         quadrimensalC.push(element['mes'])
+        mes = element['meta']
         this.quadrimensalOptions = {axis: {
           maxRange: parseFloat(element['venda'].trim().replace(',', '.')),
           gridLines: 8
@@ -138,7 +142,7 @@ export class HomeComponent {
       this.mensalCategories = mensalC
 
       this.mensalSeries = [{
-        label: 'Mensal',
+        label: 'Mensal ' + `- Meta diaria  ${meta}`,
         data: mensalS,
         type: PoChartType.Line,
         color: 'po-color-07'
@@ -147,7 +151,7 @@ export class HomeComponent {
       this.quadrimensalCategories = quadrimensalC
 
       this.quadrimensalSeries = [{
-        label: 'Quadrimensal',
+        label: 'Trimestral ' + `- Meta mensal ${mes}`,
         data: quadrimensalS,
         type: PoChartType.Line,
         color: 'po-color-07'

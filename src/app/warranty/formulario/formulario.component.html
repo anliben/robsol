@@ -38,16 +38,16 @@
     <po-upload name='image' p-label='Selecione até 3 imagem' [p-drag-drop]="true" [p-required]="true"
       [p-multiple]="true" [p-restrictions]="restrictions" (p-success)="valited('uploaded')"
       (p-error)="valited('uploaded')" (p-upload)="changeEvent('p-upload')"
-      p-url='https://api.imgbb.com/1/upload?expiration=600&key=bf0362a061f1cada6cb4cfc1885f36c4'></po-upload>
+      p-url='https://api.imgbb.com/1/upload?&key=bf0362a061f1cada6cb4cfc1885f36c4'></po-upload>
   </po-widget>
 
   <po-widget *ngIf="notes">
     <h1>Espelho de notas</h1>
-    
+
     <po-button p-size='lg' p-label='Escolher' (click)="valited('notes')"></po-button>
-    
+
   </po-widget>
-  
+
   <po-widget *ngIf="finish">
     <h1>Confirmar todas as informações</h1>
     <po-button class="po-sm-12 po-mt-2" p-label="Confirm"> </po-button>

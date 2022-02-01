@@ -18,6 +18,9 @@ export class PedidosComponent implements OnInit {
   readonly serviceApi = environment.api+ `Sales/?VENDEDOR=${localStorage.getItem('cod_vendedor')}`;
   detailedUser: any;
   quickSearchWidth: number = 3;
+  quantidade: number = 0;
+  valor_total: number = 0;
+
 
   readonly actions: PoPageDynamicTableActions = {
     new: '/documentation/po-page-dynamic-edit',
@@ -66,10 +69,18 @@ export class PedidosComponent implements OnInit {
   }
 
   private onClickUserDetail(user: { [x: string]: any; }) {
+    this.valor_total = 0;
+    this.quantidade = 0;
+
     let titulos = environment.api + `Sales/?VENDEDOR=${localStorage.getItem('cod_vendedor')}&codigo=${user['codigo']}`
     this.http.get(titulos).subscribe((res: any)=>{
       this.pedidoitems = res['items']
+      res['items'].forEach((item: any) => {
+        this.valor_total += parseFloat(item['valor_total'].trim().replace(',', '.'))
+        this.quantidade += parseInt(item['quantidade'])
+      })
     })
     this.userDetailModal.open();
   }
+
 }

@@ -25,7 +25,7 @@ export class FormularioComponent implements OnInit {
   sucessData!: PoModalComponent;
 
   buttonChooseProduct: boolean = false
-  
+
   codigo: boolean = true
   chooseProduct: boolean = false
   exchange: boolean = false;
@@ -35,7 +35,7 @@ export class FormularioComponent implements OnInit {
   uploaded: boolean = false;
 
   urls = ''
-  
+
 
   event!: string;
   input: string | undefined;
@@ -60,7 +60,7 @@ export class FormularioComponent implements OnInit {
   { property: 'estado_empresa'},
   { property: 'inscr_estadual'},
   { property: 'base_icm', divider: 'Detalhes '},
-  { property: 'chave_nfe'},
+  { property: 'chave_nfe', gridColumns: 12},
   { property: 'desc_cfop', gridColumns: 12},
   { property: 'filial_faturamento'},
   { property: 'serie'},
@@ -103,7 +103,7 @@ export class FormularioComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  
+
   confirm: PoModalAction = {
     action: () => {
       this.sucessData.close();
@@ -113,11 +113,6 @@ export class FormularioComponent implements OnInit {
 
   valited(item: string){
     if(item == 'codigo' && this.input){
-      this.urls = environment.api + `FieldService/?codigo=${this.input}&cod_cliente=05290313&loja_cliente=${localStorage.getItem('loja_cliente')}`
-      let url = environment.api + `Products/?codigo=${this.input}`
-     this.http.get(url).subscribe((response: any) =>{
-      this.items.push(response)
-    })
       this.onClickUserDetail()
       this.codigo = false
       this.chooseProduct = true
@@ -148,7 +143,7 @@ export class FormularioComponent implements OnInit {
   chooseSelect(item: string){
     this.buttonChooseProduct = true
   }
-  chooseDeselect(item: string){    
+  chooseDeselect(item: string){
     this.buttonChooseProduct = false
   }
 
@@ -159,15 +154,8 @@ export class FormularioComponent implements OnInit {
   changeEvent(event: string) {
     this.event = event;
   }
- 
-
- 
-
-
-
 
   onClickUserDetail() {
-    console.log(this.input)
     let url = environment.api + `FieldService/?codigo=${this.input}&cod_cliente=05290313&loja_cliente=${localStorage.getItem('loja_cliente')}`
     this.http.get(url).subscribe((response: any) =>{
       response['items'].forEach((element: any) =>{
@@ -185,10 +173,9 @@ export class FormularioComponent implements OnInit {
   }
 
   private onClickProdutoDetail(user: any) {
-    console.log(user['cod_produto'])
     let url = environment.api + `FieldService/?codigo=${user['cod_produto']}&cod_cliente=05290313&loja_cliente=${localStorage.getItem('loja_cliente')}`
     this.http.get(url).subscribe((res: any)=>{
-      console.log(res['items'][0])
+
       this.detailedProduto = res['items'][0]
     })
     this.userDetailProduto!.open();
