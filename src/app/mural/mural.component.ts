@@ -17,7 +17,6 @@ export class MuralComponent implements OnInit {
   ngOnInit(): void {
     if(localStorage.getItem('tipo') == 'vendedor'){
       this.vendedor = !this.vendedor
-
     }
 
     const url_metas = environment.api + `/Mural`

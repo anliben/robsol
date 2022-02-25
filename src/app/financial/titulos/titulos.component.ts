@@ -49,15 +49,18 @@ export class TitulosComponent implements OnInit {
     }else if(localStorage.getItem('tipo') == 'cliente'){
       this.tableCustomActions.push({
         label: 'Boleto',
-        icon: 'po-icon po-icon-money'
+        action: this.onClickUploadBoleto.bind(this),
+        icon: 'po-icon po-icon-money',
       },
       {
         label: 'Danfe',
-        icon: 'po-icon po-icon-sale'
+        icon: 'po-icon po-icon-sale',
+        action: this.onClickUploadDanfe.bind(this),
       },
       {
         label: 'Xml',
-        icon: 'po-icon po-icon-xml'
+        icon: 'po-icon po-icon-xml',
+        action: this.onClickUploadXml.bind(this),
       })
     }
   }
@@ -88,6 +91,31 @@ onLoad(): PoPageDynamicTableOptions {
 
   isUserInactive(person: { status: string; }) {
     return person.status === 'inactive';
+  }
+
+  private onClickUploadBoleto(user: { [x: string]: any; }){
+    const exportFileDefaultName = user.boleto;
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', user.boleto);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.setAttribute('target', '_blank');
+    linkElement.click();
+  }
+  private onClickUploadDanfe(user: { [x: string]: any; }){
+    const exportFileDefaultName = user.danfe;
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', user.danfe);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.setAttribute('target', '_blank');
+    linkElement.click();
+  }
+  private onClickUploadXml(user: { [x: string]: any; }){
+    const exportFileDefaultName = user.xml;
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', user.xml);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.setAttribute('target', '_blank');
+    linkElement.click();
   }
 
   private onClickUserDetail(user: { [x: string]: any; }) {

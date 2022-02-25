@@ -10,6 +10,7 @@ export class NotasService {
 
   downloadCsv(endpoint: string) {
     this.http.get(endpoint).subscribe((data: any) => {
+      console.log(data['items'])
       const csvStr = this.parseJsonToCsv(data['items']);
       const dataUri = 'data:text/csv;charset=utf-8,' + csvStr;
 
@@ -19,6 +20,7 @@ export class NotasService {
       linkElement.setAttribute('href', dataUri);
       linkElement.setAttribute('download', exportFileDefaultName);
       linkElement.click();
+      
     });
   }
 

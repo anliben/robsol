@@ -27,25 +27,7 @@ export class NotasComponent implements OnInit {
   constructor(public http: HttpClient, private usersService: NotasService) {}
 
   ngOnInit(): void {
-    if(localStorage.getItem('tipo') == 'vendedor' ){
-      this.tableCustomActions.push({
-        label: 'Boleto',
-        action: this.usersService.downloadCsv.bind(this.usersService, this.serviceApi),
-        icon: 'po-icon po-icon-money'
-      },
-      {
-        label: 'Danfe',
-        action: this.usersService.downloadCsv.bind(this.usersService, this.serviceApi),
-        icon: 'po-icon po-icon-sale'
-      },
-      {
-        label: 'Xml',
-        action: this.usersService.downloadCsv.bind(this.usersService, this.serviceApi),
-        icon: 'po-icon po-icon-xml'
-      })
-    }else{
-      this.tableCustomActions.push({label: 'Details', action: this.onClickUserDetail.bind(this), icon: 'po-icon po-icon-info'})
-    }
+
   }
 
   onLoad(): PoPageDynamicTableOptions {
