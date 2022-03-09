@@ -94,6 +94,7 @@ onLoad(): PoPageDynamicTableOptions {
   }
 
   private onClickUploadBoleto(user: { [x: string]: any; }){
+    console.log(user)
     const exportFileDefaultName = user.boleto;
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', user.boleto);
@@ -102,6 +103,7 @@ onLoad(): PoPageDynamicTableOptions {
     linkElement.click();
   }
   private onClickUploadDanfe(user: { [x: string]: any; }){
+    console.log(user)
     const exportFileDefaultName = user.danfe;
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', user.danfe);
@@ -110,6 +112,7 @@ onLoad(): PoPageDynamicTableOptions {
     linkElement.click();
   }
   private onClickUploadXml(user: { [x: string]: any; }){
+    console.log(user)
     const exportFileDefaultName = user.xml;
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', user.xml);
