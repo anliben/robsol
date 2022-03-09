@@ -14,7 +14,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginComponent {
   passwordRecovery: PoPageLoginRecovery = {
-    url: 'https://po-sample-api.herokuapp.com/v1/users',
+    url: '',
     type: PoModalPasswordRecoveryType.All,
     contactMail: 'suporte@robsol.com',
   };
