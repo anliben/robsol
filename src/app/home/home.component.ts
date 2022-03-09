@@ -86,7 +86,7 @@ export class HomeComponent {
   mensalSeries: Array<PoChartSerie> = [
   ];
   ngOnInit(): void {
-    let pp =  environment.api +  `Financial?VENDEDOR=${localStorage.getItem('cod_vendedor')}&status=Em Aberto`;
+    let pp =  environment.api +  `Financial?VENDEDOR=${localStorage.getItem('cod_vendedor')}&CLIENTE=${localStorage.getItem('cod_cliente')}&status=Em Aberto`;
     this.http.get(pp).subscribe((res: any) => {
       this.graphTitulosAberto = res['items'].length
     })

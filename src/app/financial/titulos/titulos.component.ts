@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { PoPageDynamicTableActions, PoPageDynamicTableCustomAction, PoPageDynamicTableCustomTableAction, PoPageDynamicTableOptions } from '@po-ui/ng-templates';
+import {  PoPageDynamicTableCustomTableAction, PoPageDynamicTableOptions } from '@po-ui/ng-templates';
 import { PoBreadcrumb, PoDynamicViewField, PoModalComponent, PoSelectOption } from '@po-ui/ng-components';
 
 
@@ -16,7 +16,7 @@ export class TitulosComponent implements OnInit {
   @ViewChild('userDetailModal')
   userDetailModal!: PoModalComponent;
 
-  serviceApi = environment.api + `Financial?VENDEDOR=${localStorage.getItem('cod_vendedor')}&CLIENTE=${localStorage.getItem('cod_cliente')}`;
+  serviceApi = environment.api + `Financial/?CLIENTE=${localStorage.getItem('cod_cliente')}`;
   detailedUser: any;
   quickSearchWidth: number = 3;
 
@@ -40,6 +40,7 @@ export class TitulosComponent implements OnInit {
   constructor(private http: HttpClient, public titulosServices: TitulosService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    console.log(this.serviceApi)
     if(localStorage.getItem('tipo') == 'vendedor'){
       this.tableCustomActions.push({
         label: 'Details',
