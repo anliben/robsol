@@ -11,7 +11,7 @@ import { PoPageDynamicTableActions, PoPageDynamicTableCustomTableAction, PoPageD
 export class ProdutosComponent implements OnInit {
   @ViewChild('userDetailModal') userDetailModal: PoModalComponent | undefined;
 
-  serviceApi = `http://200.98.81.201:40160/rest/Products?VENDEDOR=${localStorage.getItem('cod_vendedor')}`;
+  serviceApi = `http://200.98.81.201:40160/rest/Products/?VENDEDOR=${localStorage.getItem('cod_vendedor')}`;
   detailedUser!: { codigo: any; descricao: any; ean: any; grupo: any; imagem: any; ncm: any; saldo: any; tipo: any; um: any; };
   quickSearchWidth: number = 3;
   image: string = '';
@@ -51,16 +51,14 @@ export class ProdutosComponent implements OnInit {
   constructor(public http: HttpClient) {}
 
   ngOnInit(): void {
-    if(localStorage.getItem('tipo') == 'cliente'){
-      this.serviceApi = `http://200.98.81.201:40160/rest/Products?CLIENTE=${localStorage.getItem('cod_cliente')}`;
-    }
+
   }
 
 
   onLoad(): PoPageDynamicTableOptions {
     return {
       fields: [
-        { property: 'codigo', allowColumnsManager: true, label: 'Codigo', gridLgColumns: 4 , filter: true},
+        { property: 'codigo', allowColumnsManager: true, label: 'Codigo', gridLgColumns: 4 , filter: true, order: 1},
         { property: 'descricao', allowColumnsManager: true, label: 'Descricão', gridLgColumns: 8 , filter: true},
         { property: 'cor', label: "Cor", gridLgColumns: 4, filter: true},
         { property: 'marca', label: 'Marca', gridLgColumns: 6, allowColumnsManager: true, filter: true},
@@ -75,7 +73,7 @@ export class ProdutosComponent implements OnInit {
   private onClickUserDetail(user: any) {
     let produtosapi = this.serviceApi + `&codigo=${user['codigo']}`
     this.http.get(produtosapi).subscribe((res: any)=>{
-      this.image = res['image']
+      this.image = res['imagem']
       this.detailedUser = res
     })
     this.userDetailModal!.open();
